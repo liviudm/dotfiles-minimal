@@ -1,0 +1,33 @@
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false
+	ff = only
+
+[fetch]
+	prune = true
+
+[merge]
+	conflictStyle = zdiff3
+
+[diff]
+	algorithm = histogram
+	colorMoved = default
+
+[color]
+	ui = auto
+
+[core]
+	pager = less -FRX
+
+[push]
+	default = simple
+	autoSetupRemote = true
+
+[credential]
+	helper = osxkeychain
+
+# Identity, signing, conditional includes, and host-only overrides stay local.
+[include]
+	path = ~/.gitconfig.local

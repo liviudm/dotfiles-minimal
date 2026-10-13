@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Ghostty surface launcher: attach to or create a tmux session.
+# Referenced by config.ghostty's `command` option, which runs for every new
+# terminal surface (window, tab, and split). Cancel the picker to get a plain
+# login shell instead.
+
+# GUI apps don't source .zshenv. Promote Homebrew ahead of Apple's system
+# tools so tmux jobs use the same binaries as an interactive shell.
+IFS=: read -r -a extra_dirs <<<"${GHOSTTY_TMUX_EXTRA_PATH:-/opt/homebrew/bin:/usr/local/bin}"
+path_prefix=
+for dir in "${extra_dirs[@]}"; do
+  [ -d "$dir" ] || continue
+  path_prefix="${path_prefix:+$path_prefix:}$dir"
+done
+if [ -n "$path_prefix" ]; then
+  PATH="$path_prefix:$PATH"
+  export PATH
+fi
+
+# Keep both plugin interpreter names available after refreshing an existing server.
+venv_bin="$HOME/.local/share/dotfiles-minimal/tmux-python/bin"
+if [ -d "$venv_bin" ]; then
+  PATH="$venv_bin:$PATH"
+  export PATH
+fi
+
+fallback_shell() {
+  if [ -n "${SHELL:-}" ] && command -v "$SHELL" >/dev/null 2>&1; then
+    exec "$SHELL" -l
+  fi
+  exec /bin/zsh -l
+}
+
+if ! command -v tmux >/dev/null 2>&1 || ! command -v fzf >/dev/null 2>&1; then
+  echo "ghostty-tmux: tmux and fzf must be installed (brew bundle); falling back to a plain shell" >&2
+  fallback_shell
+fi
+
+# Never nest: a surface created from inside tmux gets a plain shell.
+[ -z "${TMUX:-}" ] || fallback_shell
+
+sessions=$(tmux list-sessions -F '#S' 2>/dev/null)
+
+# No server or no sessions: create/attach the default session.
+[ -n "$sessions" ] || exec tmux new-session -A -s main
+
+# A server can outlive the launcher that created it. Refresh its global PATH so
+# plugin run-shell hooks resolve the same Homebrew tools as this process.
+tmux set-environment -g PATH "$PATH"
+
+choice=$(printf '%s\nNew Session' "$sessions" |
+  fzf --no-sort --border --border-label ' tmux sessions ' --prompt '⏎  ')
+
+# Cancelled: plain login shell (escape hatch for split surfaces).
+[ -n "$choice" ] || fallback_shell
+
+if [ "$choice" = "New Session" ]; then
+  name=$(printf '' | fzf --print-query --border --border-label ' new session name ' --prompt 'name: ' 2>/dev/null | head -n 1)
+  if [ -n "$name" ]; then
+    exec tmux new-session -s "$name"
+  fi
+  exec tmux new-session
+fi
+
+exec tmux attach-session -t "$choice"

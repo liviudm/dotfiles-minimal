@@ -1,0 +1,52 @@
+# Two-line prompt (starship default). Relies on defaults for directory,
+# git_branch, cmd_duration, character, and all language modules.
+
+[cmd_duration]
+min_time = 2_000
+format = "[$duration]($style) "
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+
+# Disable noisy/irrelevant modules on a desktop
+[battery]
+disabled = true
+
+[package]
+disabled = true
+
+[memory_usage]
+disabled = true
+
+[time]
+disabled = true
+
+[username]
+disabled = true
+
+[hostname]
+ssh_only = true
+trim_at = "."
+format = "[$hostname]($style) "
+style = "bold red"
+
+# Kubernetes context shown only inside ~/projects/clients/**.
+# Starship's built-in [kubernetes] module only inspects CWD for
+# detect_files/folders, so it can't be scoped to a subtree — using
+# a [custom] module with a path-based `when` predicate instead.
+[custom.kubernetes]
+description = "kubectl context (only under ~/projects/clients)"
+when = '[[ "$PWD" == "$HOME/projects/clients"* ]]'
+command = '''
+ctx=$(kubectl config current-context 2>/dev/null) || exit 0
+ns=$(kubectl config view --minify -o jsonpath='{..namespace}' 2>/dev/null)
+if [[ -n "$ns" ]]; then printf '%s(%s)' "$ctx" "$ns"; else printf '%s' "$ctx"; fi
+'''
+format = '[⎈ $output]($style) '
+style = "bold purple"
+shell = ["bash", "--noprofile", "--norc"]
