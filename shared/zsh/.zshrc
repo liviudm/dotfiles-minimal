@@ -1,14 +1,40 @@
-# Portable interactive shell; personal additions belong in ~/.zshrc.local.
+# Oh My Zsh baseline; personal additions belong in ~/.zshrc.local.
+# Oh My Zsh supplies completion, aliases, history defaults, and plugin loading.
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 zstyle ':omz:update' mode disabled
-plugins=(git node docker kubectl ssh macos fzf-tab you-should-use zsh-autosuggestions zsh-syntax-highlighting)
+# Keep Starship responsible for the prompt, including AWS information.
+SHOW_AWS_PROMPT=false
+export PATH="$HOME/.local/bin:$HOME/.docker/bin:$PATH"
+
+plugins=(
+  # Git and GitHub
+  git
+  gh
+  # Containers, Kubernetes, and cloud
+  docker
+  kubectl
+  helm
+  aws
+  # Development and host integration
+  node
+  ssh
+  macos
+  # Interactive completion and assistance; syntax highlighting stays last
+  fzf-tab
+  you-should-use
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
 source "$ZSH/oh-my-zsh.sh"
+
+# History
 HISTSIZE=50000
 SAVEHIST=50000
 setopt EXTENDED_HISTORY INC_APPEND_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+
+# Editor and prompt
 export EDITOR=nvim VISUAL=nvim
-export PATH="$HOME/.local/bin:$HOME/.docker/bin:$PATH"
 _cursor_beam() { printf '\e[5 q' }
 precmd_functions+=(_cursor_beam)
 eval "$(starship init zsh)"
@@ -38,9 +64,21 @@ ssh() {
   fi
 }
 
-# kubectl helpers. The `kubectl` oh-my-zsh plugin provides the bulk
-# `k*` alias surface (k, kgp, kgs, kaf, kdel, ...); these add the
-# fzf-driven flows omz doesn't ship.
+# kubectl additions beyond Oh My Zsh's resource aliases and log/rollout helpers.
+alias kg='kubectl get'
+alias kd='kubectl describe'
+alias kgy='kubectl get -o yaml'
+alias kgjson='kubectl get -o json'
+alias kgwide='kubectl get -o wide'
+alias kdiff='kubectl diff'
+alias kexplain='kubectl explain'
+alias kapi='kubectl api-resources'
+alias kcan='kubectl auth can-i'
+alias ktp='kubectl top pods'
+alias ktn='kubectl top nodes'
+alias klprev='kubectl logs --previous'
+
+# fzf-driven context, namespace, and pod-log pickers.
 kctx() {
   # Switch context. No arg → fzf picker.
   if [[ -n "$1" ]]; then

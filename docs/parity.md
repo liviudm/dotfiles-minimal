@@ -17,9 +17,12 @@ sessions, `.env` state, or application containers were copied.
   is generalized and TPM launch gains venv PATH wiring for both Python names.
   No host overrides or resurrect data are imported. TPM and all ten declared
   repositories (including TPM itself) are cloned without starting a server.
-- **Zsh:** the actual plugin list, history/editor/cursor settings, prompt/zoxide,
+- **Zsh:** the source plugin list plus bundled `gh`, `helm`, and `aws` plugins,
+  history/editor/cursor settings, prompt/zoxide,
   SSH pane-title function, and Kubernetes helper functions were extracted from
   the source. Template comments, omp/Conda/LM Studio/AI additions were removed.
+  Additional kubectl shortcuts cover generic get/describe, output formats,
+  diffs, API discovery, authorization checks, metrics, and previous logs.
   Login Homebrew detection supports both prefixes; Docker's absolute user path
   became `$HOME/.docker/bin`. Optional local files are never copied from source.
 - **Git:** portable settings through the local include match the source exactly.

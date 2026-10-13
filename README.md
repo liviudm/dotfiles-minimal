@@ -92,8 +92,35 @@ For SSH signing, add your own `[gpg] format = ssh`, `[user] signingkey`,
 `[commit] gpgsign = true`, and `[gpg "ssh"] allowedSignersFile` entries locally.
 Generate/provision keys on that machine. No identity or signing state is copied.
 Zsh adds portable `~/.docker/bin` and `~/.local/bin` paths, initializes Starship
-and zoxide, and retains Git/Node/Docker/Kubernetes/SSH/macOS integration,
-Kubernetes pickers, and SSH tmux pane titles. OMZ auto-updates are disabled.
+and zoxide, and uses Oh My Zsh as the shell baseline. Enabled bundled plugins are `git`,
+`gh`, `docker`, `kubectl`, `helm`, `aws`, `node`, `ssh`, and `macos`, alongside
+the four custom interactive plugins. It retains
+Kubernetes pickers and SSH tmux pane titles. The AWS plugin's separate right
+prompt is disabled so Starship controls the prompt. OMZ auto-updates are disabled.
+
+## Kubernetes shortcuts
+
+Oh My Zsh already provides resource shortcuts (`kgp`, `kgs`, `kgd`), apply,
+logs, rollout, port-forward, and context aliases. These additions fill gaps:
+
+| Alias | Command | Example |
+| --- | --- | --- |
+| `kg` | `kubectl get` | `kg pods -n staging` |
+| `kd` | `kubectl describe` | `kd pod my-pod` |
+| `kgy` | `kubectl get -o yaml` | `kgy deployment api` |
+| `kgjson` | `kubectl get -o json` | `kgjson pod my-pod` |
+| `kgwide` | `kubectl get -o wide` | `kgwide nodes` |
+| `kdiff` | `kubectl diff` | `kdiff -f manifests/` |
+| `kexplain` | `kubectl explain` | `kexplain deployment.spec` |
+| `kapi` | `kubectl api-resources` | `kapi --namespaced=true` |
+| `kcan` | `kubectl auth can-i` | `kcan get secrets -n staging` |
+| `ktp` | `kubectl top pods` | `ktp -A --sort-by=memory` |
+| `ktn` | `kubectl top nodes` | `ktn --sort-by=cpu` |
+| `klprev` | `kubectl logs --previous` | `klprev my-pod -c api` |
+
+`ktp`/`ktn` require cluster metrics support. `kdiff` returns 1 when differences
+exist. `klprev` retrieves the previous container instance's logs. `kctx`, `kns`,
+and `klog` retain their fzf pickers. All shortcuts accept normal kubectl flags.
 
 ## Plugin and editor bootstrap
 
