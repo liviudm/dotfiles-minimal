@@ -134,7 +134,7 @@ and retry failed installs/builds there. The config uses Neovim's modern LSP API
 (0.11+). Completion may download Blink's prebuilt fuzzy matcher.
 Tokyo Night Moon, keybindings, completion, lint/format, Git, navigation and
 plugin choices remain unchanged. Starship's Kubernetes context appears under
-`~/projects/clients*`, exactly as in the source.
+`~/git` and its subdirectories.
 
 ## Updates and recovery
 

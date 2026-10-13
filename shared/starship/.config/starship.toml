@@ -35,13 +35,13 @@ trim_at = "."
 format = "[$hostname]($style) "
 style = "bold red"
 
-# Kubernetes context shown only inside ~/projects/clients/**.
+# Kubernetes context shown only inside ~/git/**.
 # Starship's built-in [kubernetes] module only inspects CWD for
 # detect_files/folders, so it can't be scoped to a subtree — using
 # a [custom] module with a path-based `when` predicate instead.
 [custom.kubernetes]
-description = "kubectl context (only under ~/projects/clients)"
-when = '[[ "$PWD" == "$HOME/projects/clients"* ]]'
+description = "kubectl context (only under ~/git)"
+when = '[[ "$PWD" == "$HOME/git" || "$PWD" == "$HOME/git/"* ]]'
 command = '''
 ctx=$(kubectl config current-context 2>/dev/null) || exit 0
 ns=$(kubectl config view --minify -o jsonpath='{..namespace}' 2>/dev/null)

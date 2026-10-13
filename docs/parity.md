@@ -8,8 +8,8 @@ sessions, `.env` state, or application containers were copied.
 - **Neovim:** all 25 files, including lazy-lock.json and after/ftplugin files,
   match byte-for-byte. Plugin choices, LSP/tool/parser lists, keybindings,
   Tokyo Night Moon, completion, Git, lint and formatting remain intact.
-- **Starship:** byte-for-byte match, including the source path predicate for
-  Kubernetes context display.
+- **Starship:** matches the source except that Kubernetes context display is
+  scoped to `~/git` and its subdirectories instead of `~/projects/clients*`.
 - **Ghostty:** all original settings match. One optional `?config.local`
   include was appended. The launcher matches except for prepending the isolated
   tmux Python bin path, so refreshing an existing server preserves libtmux wiring.
