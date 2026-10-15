@@ -149,7 +149,13 @@ resurrect/continuum, SSH titles, sesh, extrakto, links and command palette.
 No saved sessions or host overrides are imported.
 
 Start `nvim` with internet access and let Lazy finish plugin downloads/builds.
-The complete source config and `lazy-lock.json` are preserved. Use `:Lazy restore`
+The tracked `lazy-lock.json` is the pinned baseline. Lazy writes its active
+lock to `stdpath("state")/lazy-lock.json` (normally
+`~/.local/state/nvim/lazy-lock.json`), keeping the checkout clean. First launch
+seeds this copy; subsequent launches preserve local plugin updates until the
+tracked baseline changes. After pulling a changed baseline, restart Neovim and
+run `:Lazy restore` to apply it. Baseline refresh backs up the previous runtime
+lock alongside it as `.bak`, `.bak.1`, etc. Use `:Lazy restore`
 to enforce the copied lock after bootstrap; `:Lazy` shows failed builds for retry.
 Mason installs pyright, ruff, bash-language-server, lua-language-server, json-lsp,
 yaml-language-server, marksman and taplo. Taplo also supplies TOML formatting.
@@ -189,7 +195,9 @@ Rerun `./install.sh` to fill missing pieces; converged runs emit only `  ✓ `.
 Upgrade deliberately with `brew update` and `brew bundle upgrade --file=Brewfile`.
 Use `omz update` for Oh My Zsh, `git -C <plugin-dir> pull --ff-only` for Zsh
 plugins, TPM prefix + U for tmux, and `:Lazy update`, `:MasonUpdate`, `:TSUpdate`
-for the editor. Review changes to `lazy-lock.json` after editor updates.
+for the editor. Editor updates change only the runtime lock. To deliberately
+publish tested plugin versions, copy the runtime lock to the tracked
+`shared/nvim/.config/nvim/lazy-lock.json`, review it, and commit it.
 
 Every existing regular configuration file or directory being replaced is backed
 up before the managed symlink is created. The installer moves it to

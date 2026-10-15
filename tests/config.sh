@@ -17,6 +17,29 @@ dofile(vim.env.ROOT_CONFIG .. '/lua/plugins/treesitter.lua')[1].config()
 assert(vim.treesitter.language.get_lang('jsonc') == 'json', 'JSONC must use JSON parser')
 assert(vim.tbl_contains(requested, 'json'), 'JSON parser must be installed')
 assert(not vim.tbl_contains(requested, 'jsonc'), 'JSONC is not an installable parser')
+-- Exercise the real bootstrap without downloading/loading Lazy plugins.
+vim.fn.mkdir(vim.fn.stdpath('data') .. '/lazy/lazy.nvim', 'p')
+vim.fn.mkdir(vim.fn.stdpath('config'), 'p')
+local tracked = vim.fn.stdpath('config') .. '/lazy-lock.json'
+local initial = { '{"example":{"commit":"baseline"}}' }
+vim.fn.writefile(initial, tracked)
+local options
+package.preload.lazy = function() return { setup = function(opts) options = opts end } end
+local bootstrap = vim.env.ROOT_CONFIG .. '/lua/config/lazy.lua'
+dofile(bootstrap)
+local runtime = options.lockfile
+assert(runtime == vim.fn.stdpath('state') .. '/lazy-lock.json')
+assert(vim.deep_equal(vim.fn.readfile(runtime), initial))
+vim.fn.writefile({ 'local update' }, runtime)
+dofile(bootstrap)
+assert(vim.fn.readfile(runtime)[1] == 'local update', 'unchanged baseline must preserve local state')
+vim.fn.writefile({ 'existing backup' }, runtime .. '.bak')
+vim.fn.writefile({ '{"example":{"commit":"new-baseline"}}' }, tracked)
+dofile(bootstrap)
+assert(vim.fn.readfile(runtime .. '.bak.1')[1] == 'local update')
+assert(vim.fn.readfile(runtime .. '.bak')[1] == 'existing backup')
+assert(vim.deep_equal(vim.fn.readfile(runtime), vim.fn.readfile(tracked)))
+assert(vim.fn.readfile(tracked)[1] == '{"example":{"commit":"new-baseline"}}')
 vim.cmd('qa!')
 LUA
   ROOT_CONFIG="$ROOT/shared/nvim/.config/nvim" nvim --headless -u NONE -i NONE --noplugin -l "$SANDBOX/compile.lua"

@@ -17,6 +17,11 @@ for path in source_files:
     actual = (nvim_root / path).read_text()
     if path.name == 'tmux-navigator.lua':
         actual = '\n'.join(line for line in actual.split('\n') if 'mode = "t"' not in line)
+    elif path.name == 'lazy.lua':
+        start = actual.index("-- Keep Lazy's writable lock outside")
+        end = actual.index('-- End runtime lock initialization.\n\n', start) + len('-- End runtime lock initialization.\n\n')
+        actual = actual[:start] + actual[end:]
+        actual = actual.replace('  lockfile = lockfile,\n', '')
     elif path.name == 'neo-tree.lua':
         actual = '\n'.join(line for line in actual.split('\n') if 'Buffer-local tree bindings' not in line and '["<C-' not in line)
     expected = (source / nvim_root / path).read_text()
