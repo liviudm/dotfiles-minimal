@@ -4,7 +4,7 @@ return {
     event = "VeryLazy",
     opts = {
       options = {
-        theme = "auto",
+        theme = "dracula-nvim",
         component_separators = "|",
         section_separators = "",
         globalstatus = true,

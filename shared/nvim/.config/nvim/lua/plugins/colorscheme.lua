@@ -1,12 +1,12 @@
 return {
   {
-    "folke/tokyonight.nvim",
+    "Mofiqul/dracula.nvim",
     lazy = false,
     priority = 1000,
-    opts = { style = "moon" },
+    opts = {},
     config = function(_, opts)
-      require("tokyonight").setup(opts)
-      vim.cmd.colorscheme("tokyonight-moon")
+      require("dracula").setup(opts)
+      vim.cmd.colorscheme("dracula")
     end,
   },
   {

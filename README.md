@@ -159,9 +159,12 @@ vim, vimdoc and yaml parsers. Open a real file to trigger deferred LSP setup,
 then inspect `:Mason`, `:checkhealth`, `:ConformInfo` and `:Lazy`; allow downloads
 and retry failed installs/builds there. The config uses Neovim's modern LSP API
 (0.11+). Completion may download Blink's prebuilt fuzzy matcher.
-Tokyo Night Moon, keybindings, completion, lint/format, Git, navigation and
+Dracula (matching Ghostty and tmux), keybindings, completion, lint/format, Git, navigation and
 plugin choices remain unchanged. Starship's Kubernetes context appears under
 `~/git` and its subdirectories.
+
+To apply the Dracula theme change to an existing installation, run `:Lazy restore`
+and restart Neovim.
 
 ## Editor navigation
 

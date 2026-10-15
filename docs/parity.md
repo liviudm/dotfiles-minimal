@@ -7,8 +7,10 @@ sessions, `.env` state, or application containers were copied.
 
 - **Neovim:** all 25 files, including lazy-lock.json and after/ftplugin files,
   preserve the source except for terminal-mode and explicit explorer
-  Ctrl-h/j/k/l navigation. Plugin choices, LSP/tool/parser lists, other keybindings,
-  Tokyo Night Moon, completion, Git, lint and formatting remain intact.
+  Ctrl-h/j/k/l navigation and Dracula replacing Tokyo Night Moon (including
+  the Lazy fallback, pinned theme plugin, and matching Lualine theme). Other
+  plugin choices, LSP/tool/parser lists, keybindings, completion, Git, lint
+  and formatting remain intact.
 - **Starship:** matches the source except that Kubernetes context display is
   scoped to `~/git` and its subdirectories instead of `~/projects/clients*`.
 - **Ghostty:** original appearance and behavior settings match. Native split
