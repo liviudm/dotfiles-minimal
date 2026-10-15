@@ -163,6 +163,22 @@ Tokyo Night Moon, keybindings, completion, lint/format, Git, navigation and
 plugin choices remain unchanged. Starship's Kubernetes context appears under
 `~/git` and its subdirectories.
 
+## Editor navigation
+
+`vi` and `vim` are shell aliases for `nvim`. Use `Ctrl-h/j/k/l` to move
+left/down/up/right between Neovim splits, the explorer, embedded terminals,
+and adjacent tmux panes. Ghostty explicitly unbinds these keys so it passes
+them to the terminal application; its Cmd-D/Cmd-Shift-D split shortcuts are
+also disabled. Use tmux for terminal splits. Reload Ghostty with Cmd-Shift-,
+after applying this configuration. Remove conflicting Ctrl-h/j/k/l bindings
+from any Ghostty `config.local` file (included files are processed last).
+In insert mode press Escape first; navigation out of
+an embedded terminal leaves terminal input mode. These keys use the existing
+vim-tmux-navigator plugin on both sides; restart Neovim/reload tmux after changes.
+`Ctrl-a` then `h/j/k/l` remains tmux's own pane selection. In the explorer,
+plain `h` closes a node and `l` opens it; `Space e` toggles the explorer.
+Neovim buffers still use Tab/Shift-Tab, and `Space ws`/`Space wv` create splits.
+
 ## Updates and recovery
 
 Rerun `./install.sh` to fill missing pieces; converged runs emit only `  ✓ `.

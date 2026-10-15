@@ -6,11 +6,14 @@ were inspected and left intact. No private trees, host overlays, credentials,
 sessions, `.env` state, or application containers were copied.
 
 - **Neovim:** all 25 files, including lazy-lock.json and after/ftplugin files,
-  match byte-for-byte. Plugin choices, LSP/tool/parser lists, keybindings,
+  preserve the source except for terminal-mode and explicit explorer
+  Ctrl-h/j/k/l navigation. Plugin choices, LSP/tool/parser lists, other keybindings,
   Tokyo Night Moon, completion, Git, lint and formatting remain intact.
 - **Starship:** matches the source except that Kubernetes context display is
   scoped to `~/git` and its subdirectories instead of `~/projects/clients*`.
-- **Ghostty:** all original settings match. One optional `?config.local`
+- **Ghostty:** original appearance and behavior settings match. Native split
+  creation shortcuts are disabled and Ctrl-h/j/k/l are explicitly unbound so
+  navigation reaches tmux/Neovim. One optional `?config.local`
   include was appended. The launcher matches except for prepending the isolated
   tmux Python bin path, so refreshing an existing server preserves libtmux wiring.
 - **tmux:** all settings/plugin declarations match. The local-override comment
@@ -21,6 +24,7 @@ sessions, `.env` state, or application containers were copied.
   history/editor/cursor settings, prompt/zoxide,
   SSH pane-title function, and Kubernetes helper functions were extracted from
   the source. Template comments, omp/Conda/LM Studio/AI additions were removed.
+  `vi` and `vim` launch Neovim.
   Additional kubectl shortcuts cover generic get/describe, output formats,
   diffs, API discovery, authorization checks, metrics, and previous logs.
   Login Homebrew detection supports both prefixes; Docker's absolute user path

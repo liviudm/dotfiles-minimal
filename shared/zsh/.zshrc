@@ -35,6 +35,8 @@ setopt EXTENDED_HISTORY INC_APPEND_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE HI
 
 # Editor and prompt
 export EDITOR=nvim VISUAL=nvim
+alias vi='nvim'
+alias vim='nvim'
 _cursor_beam() { printf '\e[5 q' }
 precmd_functions+=(_cursor_beam)
 eval "$(starship init zsh)"

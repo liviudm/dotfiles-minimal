@@ -3,17 +3,33 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 : "${SOURCE_DOTFILES:?Set SOURCE_DOTFILES to the read-only reference checkout}"
-diff -r "$SOURCE_DOTFILES/shared/nvim" shared/nvim
 python3 - <<'PY'
 import os
 from pathlib import Path
 source = Path(os.environ['SOURCE_DOTFILES'])
+# Only the documented terminal/explorer navigation additions may differ.
+nvim_root = Path('shared/nvim')
+source_files = {p.relative_to(source / nvim_root) for p in (source / nvim_root).rglob('*') if p.is_file()}
+actual_files = {p.relative_to(nvim_root) for p in nvim_root.rglob('*') if p.is_file() and not p.name.endswith('.local.lua')}
+assert actual_files == source_files
+for path in source_files:
+    actual = (nvim_root / path).read_text()
+    if path.name == 'tmux-navigator.lua':
+        actual = '\n'.join(line for line in actual.split('\n') if 'mode = "t"' not in line)
+    elif path.name == 'neo-tree.lua':
+        actual = '\n'.join(line for line in actual.split('\n') if 'Buffer-local tree bindings' not in line and '["<C-' not in line)
+    assert actual == (source / nvim_root / path).read_text(), str(path)
+
 relative = Path('shared/starship/.config/starship.toml')
 expected = (source / relative).read_text().replace('~/projects/clients/**', '~/git/**').replace('only under ~/projects/clients', 'only under ~/git').replace('[[ "$PWD" == "$HOME/projects/clients"* ]]', '[[ "$PWD" == "$HOME/git" || "$PWD" == "$HOME/git/"* ]]')
 assert relative.read_text() == expected
 
 relative = Path('shared/ghostty/Library/Application Support/com.mitchellh.ghostty/config.ghostty')
-assert relative.read_text() == (source / relative).read_text() + '\n# Optional machine-local settings (not tracked).\nconfig-file = ?config.local\n'
+expected = (source / relative).read_text().replace('cmd+d=new_split:right', 'cmd+d=unbind').replace('cmd+shift+d=new_split:down', 'cmd+shift+d=unbind')
+expected += '\n# Optional machine-local settings (not tracked).\nconfig-file = ?config.local\n'
+expected += '\n# Pass directional keys to tmux/Neovim instead of Ghostty splits.\n'
+expected += ''.join(f'keybind = ctrl+{key}=unbind\n' for key in 'hjkl')
+assert relative.read_text() == expected
 relative = Path('shared/ghostty/.local/bin/ghostty-tmux')
 addition = '''# Keep both plugin interpreter names available after refreshing an existing server.
 venv_bin="$HOME/.local/share/dotfiles-minimal/tmux-python/bin"
