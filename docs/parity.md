@@ -10,7 +10,8 @@ sessions, `.env` state, or application containers were copied.
   Ctrl-h/j/k/l navigation and Dracula replacing Tokyo Night Moon (including
   the Lazy fallback, pinned theme plugin, and matching Lualine theme). Other
   plugin choices, LSP/tool/parser lists, keybindings, completion, Git, lint
-  and formatting remain intact.
+  and formatting remain intact. The unsupported `jsonc` parser request is
+  removed; JSONC filetypes explicitly use the JSON parser.
 - **Starship:** matches the source except that Kubernetes context display is
   scoped to `~/git` and its subdirectories instead of `~/projects/clients*`.
 - **Ghostty:** original appearance and behavior settings match. Native split

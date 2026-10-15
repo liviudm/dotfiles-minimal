@@ -9,6 +9,14 @@ for _, path in ipairs(vim.fn.glob(vim.env.ROOT_CONFIG .. '/**/*.lua', false, tru
   local chunk, err = loadfile(path)
   assert(chunk, err)
 end
+local requested
+package.preload['nvim-treesitter'] = function()
+  return { install = function(parsers) requested = parsers end }
+end
+dofile(vim.env.ROOT_CONFIG .. '/lua/plugins/treesitter.lua')[1].config()
+assert(vim.treesitter.language.get_lang('jsonc') == 'json', 'JSONC must use JSON parser')
+assert(vim.tbl_contains(requested, 'json'), 'JSON parser must be installed')
+assert(not vim.tbl_contains(requested, 'jsonc'), 'JSONC is not an installable parser')
 vim.cmd('qa!')
 LUA
   ROOT_CONFIG="$ROOT/shared/nvim/.config/nvim" nvim --headless -u NONE -i NONE --noplugin -l "$SANDBOX/compile.lua"

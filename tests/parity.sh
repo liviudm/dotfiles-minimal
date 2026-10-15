@@ -22,6 +22,8 @@ for path in source_files:
     expected = (source / nvim_root / path).read_text()
     if path.name == 'colorscheme.lua':
         expected = expected.replace('folke/tokyonight.nvim', 'Mofiqul/dracula.nvim').replace('opts = { style = "moon" }', 'opts = {}').replace('require("tokyonight")', 'require("dracula")').replace('tokyonight-moon', 'dracula')
+    elif path.name == 'treesitter.lua':
+        expected = expected.replace('"go", "json", "jsonc",', '"go", "json",').replace('      require("nvim-treesitter").install(parsers)', '      -- JSONC is a filetype, not a separately supported parser.\n      vim.treesitter.language.register("json", "jsonc")\n      require("nvim-treesitter").install(parsers)')
     elif path.name == 'lazy.lua':
         expected = expected.replace('tokyonight-moon', 'dracula')
     elif path.name == 'statusline.lua':

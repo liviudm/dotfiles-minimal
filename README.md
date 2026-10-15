@@ -154,8 +154,9 @@ to enforce the copied lock after bootstrap; `:Lazy` shows failed builds for retr
 Mason installs pyright, ruff, bash-language-server, lua-language-server, json-lsp,
 yaml-language-server, marksman and taplo. Taplo also supplies TOML formatting.
 Tree-sitter downloads/builds bash, c, diff, git_config, gitcommit, gitignore, go,
-json, jsonc, lua, luadoc, markdown, markdown_inline, python, query, regex, toml,
-vim, vimdoc and yaml parsers. Open a real file to trigger deferred LSP setup,
+json, lua, luadoc, markdown, markdown_inline, python, query, regex, toml,
+vim, vimdoc and yaml parsers. JSONC files use the JSON parser; no separate
+`jsonc` parser is requested. Open a real file to trigger deferred LSP setup,
 then inspect `:Mason`, `:checkhealth`, `:ConformInfo` and `:Lazy`; allow downloads
 and retry failed installs/builds there. The config uses Neovim's modern LSP API
 (0.11+). Completion may download Blink's prebuilt fuzzy matcher.

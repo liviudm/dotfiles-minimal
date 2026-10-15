@@ -1,6 +1,6 @@
 local parsers = {
   "bash", "c", "diff", "git_config", "gitcommit", "gitignore",
-  "go", "json", "jsonc", "lua", "luadoc", "markdown", "markdown_inline",
+  "go", "json", "lua", "luadoc", "markdown", "markdown_inline",
   "python", "query", "regex", "toml", "vim", "vimdoc", "yaml",
 }
 
@@ -11,6 +11,8 @@ return {
     lazy = false,
     build = ":TSUpdate",
     config = function()
+      -- JSONC is a filetype, not a separately supported parser.
+      vim.treesitter.language.register("json", "jsonc")
       require("nvim-treesitter").install(parsers)
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(ev)
