@@ -20,6 +20,7 @@ return {
           "lua-language-server",
           "json-lsp",
           "yaml-language-server",
+          "helm-ls",
           "marksman",
           "taplo",
         },
@@ -55,8 +56,14 @@ return {
         },
       })
 
+      vim.lsp.config("helm_ls", {
+        settings = {
+          ["helm-ls"] = { yamlls = { path = "yaml-language-server" } },
+        },
+      })
+
       vim.lsp.enable({
-        "pyright", "ruff", "bashls", "lua_ls", "jsonls", "marksman", "taplo",
+        "pyright", "ruff", "bashls", "lua_ls", "jsonls", "marksman", "taplo", "helm_ls",
       })
 
       vim.api.nvim_create_autocmd("LspAttach", {

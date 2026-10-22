@@ -111,3 +111,8 @@ klog() {
 }
 
 [[ ! -f "$HOME/.zshrc.local" ]] || source "$HOME/.zshrc.local"
+
+tssh() {
+  ip="$1"
+  TERM=xterm-256color tsh ssh root@ip="$ip"
+}

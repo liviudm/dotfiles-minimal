@@ -1,6 +1,6 @@
 local parsers = {
   "bash", "c", "diff", "git_config", "gitcommit", "gitignore",
-  "go", "json", "lua", "luadoc", "markdown", "markdown_inline",
+  "go", "gotmpl", "helm", "json", "lua", "luadoc", "markdown", "markdown_inline",
   "python", "query", "regex", "toml", "vim", "vimdoc", "yaml",
 }
 

@@ -44,3 +44,14 @@ opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 
 vim.g.autoformat = true
+
+-- Helm templates: YAML with Go templating, handled by helm-ls rather than yamlls.
+vim.filetype.add({
+  pattern = {
+    [".*/templates/.*%.ya?ml"] = "helm",
+    [".*/templates/.*%.tpl"] = "helm",
+    [".*/templates/.*%.txt"] = "helm",
+    ["helmfile.*%.ya?ml"] = "helm",
+  },
+  filename = { ["_helpers.tpl"] = "helm" },
+})
